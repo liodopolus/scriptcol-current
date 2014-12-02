@@ -1,0 +1,62 @@
+#!/bin/sh
+# written by Jeffrey Scherling Sun Sep 19 23:44:51 CEST 2010
+# vncserver start script
+#
+# Original: http://www.linuxnetmag.com/de/issue8/m8installation801.html
+# Author: Guenther Zander <g.zander@hamburg.de>
+#
+# /etc/init.d/vncserver         this Script
+# /usr/bin/vncserver            Program
+#
+
+# Check for missing binaries
+FOO_BIN="/usr/bin/vncserver"
+test -x $FOO_BIN || exit 5
+
+# User, unter dem der VNC-Server ausgefuehrt wird
+VNC_USER="jeff"
+export VNC_USER
+
+# Set HOME of User
+HOME="/home/jeff"
+export HOME
+
+# Set ID for Connections
+FOO_ID=1
+
+case "$1" in
+    start)
+        echo -n "Starting Vnc-Server with Terminal-ID $FOO_ID "
+
+        # Delete old PIDs
+        rm -f $HOME/.vnc/$HOSTNAME:$FOO_ID.pid
+
+        if [ -e $HOME/.vnc/$HOSTNAME:$FOO_ID.log ]; then
+           cat $HOME/.vnc/$HOSTNAME:$FOO_ID.log >> /var/log/vncserver.log 2>&1
+           rm -f $HOME/.vnc/$HOSTNAME:$FOO_ID.log
+        fi
+
+        sudo -u $VNC_USER -H $FOO_BIN :$FOO_ID 2>&1
+        ;;
+#
+     stop)
+        echo -n "Shutting down Vnc-Server "
+        $FOO_BIN -kill :$FOO_ID 2>&1
+
+        cat $HOME/.vnc/$HOSTNAME:$FOO_ID.log >> /var/log/vncserver.log 2>&1
+        rm -f $HOME/.vnc/$HOSTNAME:$FOO_ID.log
+
+        ;;
+#
+     restart)
+        $0 stop
+        $0 start
+        ;;
+#
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+# -

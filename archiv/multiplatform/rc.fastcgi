@@ -1,0 +1,67 @@
+#!/bin/sh
+# written by Jeffrey Scherling Sun Apr 29 16:10:09 CEST 2012
+# php-cgi (fastcgi) startup script for slackware
+# see also php-fpm its newer, currently not build in php-5.3.10
+
+BIN=/usr/bin/php-cgi
+SOK=/tmp/fastcgi.socket
+#SOK=127.0.0.1:9000
+PID=/var/run/fastcgi.pid
+# currently no logging
+LOG=/var/log/fastcgi.log
+USER=root
+CHILDREN=3
+MAX_REQUESTS=1000
+INI=/etc/httpd/php.ini
+#read default config
+#PAR="-c $INI"
+PAR=""
+
+export PHP_FCGI_CHILDREN=$CHILDREN
+export PHP_FCGI_MAX_REQUESTS=$MAX_REQUESTS
+
+fastcgi_start() {
+  echo "Starting fastcgi server daemon..."
+  if [ -x $BIN ]; then
+    su -m ${USER} -c "$BIN -b $SOK &" 
+    # get pid
+    pgrep -f php-cgi > $PID
+  fi
+}
+
+fastcgi_stop() {
+  echo "Shutdown fastcgi gracefully..."
+  kill -QUIT $(cat $PID)
+  # remove socket 
+  if [ -r $SOK ]; then
+    /bin/rm -f $SOK
+  fi
+  # remove pidfile
+  if [ -r $PID ]; then
+    /bin/rm -f $PID
+  fi
+  sleep 1
+  #echo "" > $LOG
+}
+
+fastcgi_restart() {
+  fastcgi_stop
+  sleep 3
+  fastcgi_start
+}
+
+case "$1" in
+  start)
+    fastcgi_start
+    ;;
+  stop)
+    fastcgi_stop
+    ;;
+  restart)
+    fastcgi_restart
+    ;;
+  *)
+  echo "usage: `basename $0` {start|stop||restart}"
+esac
+
+

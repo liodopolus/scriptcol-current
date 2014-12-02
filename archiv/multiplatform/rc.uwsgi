@@ -1,0 +1,54 @@
+#!/bin/sh
+# written by Jeffrey Scherling Sun Mar 18 15:11:10 CET 2012
+# uwsgi startup script for slackware
+
+BIN=/usr/bin/uwsgi
+SOK=/tmp/uwsgi.socket
+PID=/var/run/uwsgi.pid
+LOG=/var/log/uwsgi.log
+PAR="--master --vhost --workers 1 --uid jeffrey --gid users"
+
+
+uwsgi_start() {
+  echo "Starting uwsgi server daemon..."
+  if [ -x $BIN ]; then
+    $BIN --socket $SOK --pidfile $PID --daemonize $LOG $PAR
+  fi
+}
+
+uwsgi_stop() {
+  echo "Shutdown uwsgi gracefully..."
+  kill -QUIT $(cat $PID)
+  # remove socket 
+  if [ -r $SOK ]; then
+    /bin/rm -f $SOK
+  fi
+  # remove pidfile
+  if [ -r $PID ]; then
+    /bin/rm -f $PID
+  fi
+  sleep 1
+  echo "" > $LOG
+}
+
+uwsgi_restart() {
+  uwsgi_stop
+  sleep 3
+  uwsgi_start
+}
+
+case "$1" in
+  start)
+    uwsgi_start
+    ;;
+  stop)
+    uwsgi_stop
+    ;;
+  restart)
+    uwsgi_restart
+    ;;
+  *)
+  echo "usage: `basename $0` {start|stop||restart}"
+esac
+
+
