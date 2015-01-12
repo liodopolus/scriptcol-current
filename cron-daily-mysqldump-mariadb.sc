@@ -23,14 +23,14 @@ InnoDB_Names="aikidokyritz-d7"
 
 
 # only for MyIsam Databases
-for Database in $MyIsDB ; do
-mysqldump -u root -p?????? --flush-logs --master-data --lock-all-tables --databases $Database > $TAR/"$DATE"_"$Database"_MyIsDB.sql
+for Database in $MyIsDB_Names ; do
+mysqldump -u root -p????? --flush-logs --master-data=2 --databases $Database > $TAR/"$DATE"_"$Database"_MyIsDB.sql
 done
 
 
 # only for InnoDB Databases
 for Database in $InnoDB_Names ; do
-mysqldump -u root -p?????? --flush-logs --master-data --single-transaction --databases $Database > $TAR/"$DATE"_"$Database"_InnoDB.sql
+mysqldump -u root -p????? --flush-logs --master-data=2 --single-transaction --databases $Database > $TAR/"$DATE"_"$Database"_InnoDB.sql
 done
 
 
