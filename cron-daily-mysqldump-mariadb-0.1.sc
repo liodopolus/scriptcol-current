@@ -34,3 +34,10 @@ mysqldump -u root -pgfh37jkm --flush-logs --master-data=2 --single-transaction -
 done
 
 
+# remove backups older than 3 day's
+# exec serveral times the command
+#find $TAR -type f -name "*.sql" -mtime +2 -print0 -execdir rm -f '{}' \;
+# exec one time the command 
+find $TAR -type f -name "*.sql" -mtime +2 -print0 -execdir rm -f '{}' \+
+
+
