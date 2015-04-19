@@ -93,21 +93,6 @@ if [ "$(lsmod | grep nbd | cut -b -3 )" != "nbd" ] ; then
 elif [ ! "$(lsmod | grep nbd | cut -b 31)" -eq 0 ] ; then
 	#echo "Module is connected"
 
-# if mounted then umount first
-if [ "$(df -h | grep nbd | cut -b -11)" != $PAR ] ; then
-	echo "$PAR not mounted"
-
-elif [ "$(df -h | grep nbd | cut -b -11)" = $PAR ] ; then
-	#echo "$PAR mounted"
-
-	# umount partition
-	sudo -u root umount $PAR
-	echo "Partition 1 umounted"
-
-else
-	echo "ERROR"
-	exit 1
-fi
 	# disconnect nbd
 	qemu-nbd -d $DEV
 	echo "NBD disconnected"
@@ -190,10 +175,13 @@ case "$1" in
 		conn
 		;;
 	-disco)
-		disco
+		umount # first umount
+		disco # then disconnect
 		;;
 	-mount)
-		mount
+		load # first load
+		conn # first connect
+		mount # then mount
 		;;
 	-umount)
 		umount
