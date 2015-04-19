@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # written by Jeffrey Scherling Sun Apr 19 16:23:12 CEST 2015
 # nbd load, unload and qemu-nbd connect, disconnect script
 # only for partion 1, more is currently not supported
@@ -19,7 +19,7 @@ if [ "$(lsmod | grep nbd | cut -b -3 )" != "nbd" ] ; then
 	#echo "Module not loaded"
 
 	# load nbd
-	modprobe nbd max_part=63
+	sudo /sbin/modprobe nbd max_part=63
 	echo "Module loaded"
 
 elif [ ! "$(lsmod | grep nbd | cut -b 31)" -eq 0 ] ; then
@@ -49,8 +49,8 @@ elif [ "$(lsmod | grep nbd | cut -b 31)" -eq 0 ] ; then
 	#echo "Module is disconnected"
 
 	# reload nbd
-	rmmod nbd
-	modprobe nbd max_part=63
+	sudo /sbin/rmmod nbd
+	sudo /sbin/modprobe nbd max_part=63
 	echo "Module reloaded"
 
 else
@@ -74,7 +74,7 @@ elif [ "$(lsmod | grep nbd | cut -b 31)" -eq 0 ] ; then
 	#echo "Module is disconnected"
 
 	# connect nbd
-	qemu-nbd -c $DEV $IMG
+	sudo /usr/bin/qemu-nbd -c $DEV $IMG
 	echo "NBD connected"
 
 else
@@ -94,7 +94,7 @@ elif [ ! "$(lsmod | grep nbd | cut -b 31)" -eq 0 ] ; then
 	#echo "Module is connected"
 
 	# disconnect nbd
-	qemu-nbd -d $DEV
+	sudo /usr/bin/qemu-nbd -d $DEV
 	echo "NBD disconnected"
 
 elif [ "$(lsmod | grep nbd | cut -b 31)" -eq 0 ] ; then
@@ -123,7 +123,7 @@ if [ ! -d $DIR ] ; then
 elif [ -d $DIR ] ; then
 
 	# mount first partion in image
-	sudo -u root mount $PAR $DIR
+	sudo /bin/mount $PAR $DIR
 	echo "Partition 1 mounted"
 
 else
@@ -153,7 +153,7 @@ elif [ "$(df -h | grep nbd | cut -b -11)" = $PAR ] ; then
 	#echo "$PAR mounted"
 
 	# umount partition
-	sudo -u root umount $PAR
+	sudo /bin/umount $PAR
 	echo "Partition 1 umounted"
 
 else
@@ -188,13 +188,7 @@ case "$1" in
 		;;
 	*)
 		echo ""
-		echo "usage: $(basename $0) -option"
-	      	echo "-load"
-		echo "-rload" 
-		echo "-conn"
-	       	echo "-disco" 
-		echo "-mount"
-		echo "-umount" 
+		echo "usage: $(basename $0) [-load] [-rload] [-conn] [-disco] [-mount] [-umount]" 
 		echo ""
 
 		exit 1
