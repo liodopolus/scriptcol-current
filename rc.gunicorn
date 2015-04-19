@@ -1,0 +1,85 @@
+#!/bin/sh
+# written by Jeffrey Scherling
+# gunicorn startup script for slackware
+# http://docs.gunicorn.org/en/latest/settings.html#config-file
+
+# project path
+PRO=/home/jeffrey/projects/django/mysite
+
+# gunicorn config of project
+CONF=gunicorn.conf.py
+
+# application
+APP='mysite.wsgi:application'
+
+
+### don't change things below this line ###
+
+# bin
+BIN=$(which gunicorn)
+
+# socket
+SOK=/tmp/gunicorn.sock
+#SOK=127.0.0.1:8012
+
+# pid file
+PID=/var/run/gunicorn.pid
+
+# log file
+LOG=/var/log/gunicorn.log
+
+# user who runs gunicorn
+USER=amorsql
+
+# examples
+# /usr/bin/gunicorn -b unix:gunicorn.sock -p gunicorn.pid hello:app
+# unicorn -u user -g group -b unix:/tmp/gunicorn.sock -p gunicorn.pid mysite.wsgi:application
+
+# start functions
+gunicorn_start() {
+  echo "Starting gunicorn server daemon..."
+  if [ -x $BIN ]; then
+    #su -m ${USER} -c "$BIN -b unix:$SOK -p $PID &" 
+    cd $PRO
+    exec $BIN -c $CONF -p $PID $APP
+    # get pid
+    #pgrep -f gunicorn > $PID
+  fi
+}
+
+gunicorn_stop() {
+  echo "Shutdown gunicorn gracefully..."
+  kill -QUIT $(cat $PID)
+  # remove socket 
+  if [ -r $SOK ]; then
+    /bin/rm -f $SOK
+  fi
+  # remove pidfile
+  if [ -r $PID ]; then
+    /bin/rm -f $PID
+  fi
+  sleep 1
+  #echo "" > $LOG
+}
+
+gunicorn_restart() {
+  gunicorn_stop
+  sleep 3
+  gunicorn_start
+}
+
+# start routines
+case "$1" in
+  start)
+    gunicorn_start
+    ;;
+  stop)
+    gunicorn_stop
+    ;;
+  restart)
+    gunicorn_restart
+    ;;
+  *)
+  echo "usage: `basename $0` {start|stop||restart}"
+esac
+

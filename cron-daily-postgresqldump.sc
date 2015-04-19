@@ -43,7 +43,7 @@ fi
 
 
 # databases it is important to choose the right backup method!
-PgsqlDB_Names="aikidokyritz-d7-pgsql"
+PgsqlDB_Names="aikidokyritz-d7-pgsql mydjangosite"
 
 
 # only for Postgresql Databases

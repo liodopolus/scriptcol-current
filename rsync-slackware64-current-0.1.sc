@@ -10,7 +10,7 @@ VER=${VER:-current}
 HOS=$(hostname)
 TAR=/media/"$HOS"_system/source/slackware/$DIS-$VER
 
-RSYNCURL="rsync://ftp.gwdg.de/pub/linux/slackware"
+RSYNCURL="rsync://ftp5.gwdg.de/pub/linux/slackware"
 #RSYNCURL="rsync://taper.alienbase.nl/mirrors/slackware"
 #RSYNCURL="rsync.slackware.pl::slackware"
 

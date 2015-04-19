@@ -44,13 +44,30 @@ dot_new() {
 }
 
 initrd_upg() {
-	# if you use a generic kernel KVER (Kernel-Version) from slackpkg PACKAGES.TXT, upgrade must done before
+	# get kernel version from PACKAGES.TXT
 	KVER=$(grep kernel-source*.*.txz /var/lib/slackpkg/PACKAGES.TXT | cut -d - -f 3)
-	echo "Creating Initrd Image"
-	$(/usr/share/mkinitrd/mkinitrd_command_generator.sh -r -k $KVER -a "-o /boot/initrd-$KVER.gz")
+
+	echo ""
+	echo "mkinitrd"
+
+	# setup for generic kernel with xfs and root partion
+	# rts_pstor = sd-card reader realtek firmware
+	mkinitrd -c -u -L -R -k $KVER \
+		 -m xfs:ntfs:btrfs:kvm-intel:usbhid:hid_generic:xhci-hcd:ehci-pci:snd-hda-intel:snd_hda_codec_conexant:snd_hda_codec_hdmi:acpi_cpufreq:i915:nbd \
+		 -f xfs \
+		 -r /dev/sda2 \
+		 -o /boot/initrd-$KVER.gz
+
+	# wait until everything is finished
 	sleep 5s
-	ln -sf "/boot/initrd-$KVER.gz" "/boot/initrd-custom.gz"
-	ln -sf "/boot/vmlinuz-generic-$KVER" "/boot/vmlinuz-generic"
+
+	# link too match lilo config
+	ln -sf /boot/initrd-$KVER.gz /boot/initrd-generic.gz
+	ln -sf /boot/vmlinuz-generic-$KVER /boot/vmlinuz-generic
+
+	# link config and System.map to generic
+	ln -sf /boot/System.map-generic-$KVER /boot/System.map
+	ln -sf /boot/config-generic-$KVER /boot/config
 }
 
 boot_upg() {
@@ -97,6 +114,7 @@ case "$1" in
 		;;
 	initrd_upg)
 		initrd_upg
+		boot_upg
 		;;
 	*)
 		echo "usage: `basename $0` { update | inst_new | upgr_all | clean_sys | initrd_upg | sync }"
