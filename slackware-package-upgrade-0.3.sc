@@ -52,8 +52,23 @@ initrd_upg() {
 
 	# setup for generic kernel with xfs and root partion
 	# rts_pstor = sd-card reader realtek firmware
+	#
+	# kernel drivers for acer 3830TG intel i5
+	#i915 # VGA compatible controller
+	#mei_me # Communication controller
+	#ehci_pci # USB controller
+	#snd_hda_intel # Audio device
+	#shpchp # PCI bridge
+	#lpc_ich # ISA bridge
+	#ahci # SATA controller
+	#i2c_i801 # SMBus
+	#atl1c # Ethernet controller
+	#iwldvm # Network controller
+	#rtsx_pci # Flash controller RTS5209
+	#xhci_pci # USB controller
+	#
 	mkinitrd -c -u -L -R -k $KVER \
-		 -m xfs:ntfs:btrfs:kvm-intel:usbhid:hid_generic:xhci-hcd:ehci-pci:snd-hda-intel:snd_hda_codec_conexant:snd_hda_codec_hdmi:acpi_cpufreq:i915:nbd \
+		 -m xfs:btrfs:ntfs:kvm-intel:i915:mei_me:ehci_pci:snd-hda-intel:snd_hda_codec_conexant:snd_hda_codec_hdmi:shpchp:lpc_ich:ahci:i2c_i801:atl1c:iwldvm:rtsx_pci:xhci_pci:usbhid:hid_generic:acpi_cpufreq:nbd max_part=63 \
 		 -f xfs \
 		 -r /dev/sda2 \
 		 -o /boot/initrd-$KVER.gz
