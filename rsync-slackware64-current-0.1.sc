@@ -27,7 +27,7 @@ cd $TAR
 
 pull() {
 	echo "pull $DIS-$VER to $TAR"
-		rsync -avz --delete --exclude "pasture" --exclude "source" $RSYNCURL/$DIS-$VER/ .
+		rsync -avz --delete --progress --exclude "pasture" --exclude "source" $RSYNCURL/$DIS-$VER/ .
 	echo -e "\n <pull $DIS-$VER>: \t\t [\033[1;35m  ok  \033[0m]\n"
 }
 

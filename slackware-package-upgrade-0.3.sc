@@ -67,8 +67,9 @@ initrd_upg() {
 	#rtsx_pci # Flash controller RTS5209
 	#xhci_pci # USB controller
 	#
+	#-m xfs:btrfs:ntfs:kvm-intel:i915:mei_me:ehci_pci:snd-hda-intel:snd_hda_codec_conexant:snd_hda_codec_hdmi:shpchp:lpc_ich:ahci:i2c_i801:atl1c:iwldvm:rtsx_pci:xhci_pci:usbhid:hid_generic:acpi_cpufreq:nbd max_part=63 \
 	mkinitrd -c -u -L -R -k $KVER \
-		 -m xfs:btrfs:ntfs:kvm-intel:i915:mei_me:ehci_pci:snd-hda-intel:snd_hda_codec_conexant:snd_hda_codec_hdmi:shpchp:lpc_ich:ahci:i2c_i801:atl1c:iwldvm:rtsx_pci:xhci_pci:usbhid:hid_generic:acpi_cpufreq:nbd max_part=63 \
+		 -m xfs:btrfs:ntfs:kvm-intel:i915:mei_me:ehci_pci:shpchp:lpc_ich:ahci:i2c_i801:atl1c:iwldvm:rtsx_pci:xhci_pci:usbhid:hid_generic:nbd max_part=63 \
 		 -f xfs \
 		 -r /dev/sda2 \
 		 -o /boot/initrd-$KVER.gz
