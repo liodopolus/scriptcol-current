@@ -1,5 +1,5 @@
 #!/bin/sh
-# written by Jeffrey Scherling Sat Jul 21 02:10:12 CEST 2012
+# written by Jeffrey Scherling Sat Jan  2 16:32:10 CET 2016
 # rsync script for slackwarearm-current
 
 CWD=$(pwd)
@@ -9,10 +9,12 @@ DIS="slackwarearm"
 VER=${VER:-14.1}
 
 HOS=$(hostname)
-TAR=/media/"$HOS"_system/source/slackware/$DIS-$VER
+TAR=/media/"$HOS"_system/slackware/$DIS-$VER
 
-#RSYNCURL="ftp.arm.slackware.com/slackwarearm"
-RSYNCURL="rsync.slackware.pl::slackwarearm"
+RSYNCURL="ftp.arm.slackware.com::slackwarearm"
+#RSYNCURL="ftp.halifax.rwth-aachen.de::slackwarearm"
+#RSYNCURL="rsync.slackware.pl::slackwarearm"
+
 #rsync -Pavv --delete ftp.arm.slackware.com::slackwarearm/slackwarearm-current .
 #ftp://ftp.arm.slackware.com/slackwarearm/slackwarearm-14.0/
 

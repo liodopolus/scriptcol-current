@@ -1,5 +1,5 @@
 #!/bin/sh
-# written by Jeffrey Scherling Sat Jul 21 02:10:12 CEST 2012
+# written by Jeffrey Scherling Sat Jan  2 16:30:30 CET 2016
 # rsync script for slackware64-current
 
 CWD=$(pwd)
@@ -8,9 +8,10 @@ DIS="slackware64"
 VER=${VER:-current}
 
 HOS=$(hostname)
-TAR=/media/"$HOS"_system/source/slackware/$DIS-$VER
+TAR=/media/"$HOS"_system/slackware/$DIS-$VER
 
-RSYNCURL="rsync://ftp5.gwdg.de/pub/linux/slackware"
+RSYNCURL="rsync://mirror.netcologne.de/slackware"
+#RSYNCURL="rsync://ftp5.gwdg.de/pub/linux/slackware"
 #RSYNCURL="rsync://taper.alienbase.nl/mirrors/slackware"
 #RSYNCURL="rsync.slackware.pl::slackware"
 

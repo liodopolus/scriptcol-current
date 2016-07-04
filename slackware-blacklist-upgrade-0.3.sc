@@ -80,34 +80,68 @@ aaa_elflibs
 #kdepim-runtime
 #kdepim
 
+# KDE 4
+4.14.3
+libmm-qt
+libnm-qt
+plasma-nm
+kdeconnect-kde
+
+
 # Gnomeslackbuilds
 [0-9]+gsb
 xfce
 
+# bumblebee - driver for nvidia optimus technology aka intel:nvidia automatic graphics switch
+[0-9]+_bbsb
+
+# blacklist nouveau 
+xf86-video-nouveau-blacklist
+
 # Specials
 minidlna
-calibre1
+skanlite
+
 # because of system damage
 slackpkg+
 
 # Sound Problem April 2015
 phonon-gstreamer
 
-# only [de] packages look ,
-kde-l10n-[a-c,e-z][a-d,f-z]
-calligra-l10n-[a-c,e-z][a-d,f-z]
-calligra-l10n-en_GB
+# only [de] packages
+kde-l10n-[a-c,e-z][a-e,f-z]
+calligra-l10n-[a-c,e-z][a-e,f-z]
+libreoffice-l10n-[a-c,e-z][a-e,f-z]
+libreoffice-dict-[a-c,e-z][a-e,f-z]
 
 # difficult to select
+calligra-l10n-da
+calligra-l10n-en_GB
+calligra-l10n-pt_BR
+calligra-l10n-zh_CN
+calligra-l10n-zh_TW
+
 kde-l10n-da
 kde-l10n-en_GB
-kde-l10n-he
 kde-l10n-nds
 kde-l10n-pt_BR
 kde-l10n-zh_CN
 kde-l10n-zh_TW
 
+libreoffice-l10n-da
+libreoffice-l10n-en_GB
+libreoffice-l10n-pt_BR
+libreoffice-l10n-zh_CN
+libreoffice-l10n-zh_TW
+
+libreoffice-dict-da
+libreoffice-dict-en_GB
+libreoffice-dict-pt_BR
+libreoffice-dict-zh_CN
+libreoffice-dict-zh_TW
+
 #---8<---
+
 EOF
 
 

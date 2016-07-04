@@ -6,6 +6,7 @@
 # 0.2 changed slackpkg upgrade first, after that glibc-solibs
 # 0.3 added initrd and lilo
 # 0.4 commented initrd and lilo out from sync because of LTS + Nvidia
+# 0.5 initrd uname -r added 
 
 CWD=$(pwd)
 
@@ -45,8 +46,8 @@ dot_new() {
 }
 
 initrd_upg() {
-	# get kernel version from PACKAGES.TXT
-	KVER=$(grep kernel-source*.*.txz /var/lib/slackpkg/PACKAGES.TXT | cut -d - -f 3)
+	# get kernel version
+	KVER=$(uname -r)
 
 	echo ""
 	echo "mkinitrd"
