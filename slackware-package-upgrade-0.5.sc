@@ -74,7 +74,7 @@ initrd_upg() {
 		# i915, nvidia, bbswitch (ACPI calls for Optimus), bumblebee activ!
 		#
 	mkinitrd -c -u -L -R -k $KVER \
-		 -m xfs:btrfs:ntfs:kvm-intel:i915:nvidia:bbswitch:mei_me:ehci_pci:shpchp:lpc_ich:ahci:i2c_i801:atl1c:iwldvm:rtsx_pci:xhci_pci:usbhid:hid_generic:nbd max_part=63 \
+		 -m xfs:btrfs:ntfs:kvm-intel:i915:mei_me:ehci_pci:shpchp:lpc_ich:ahci:i2c_i801:atl1c:iwldvm:rtsx_pci:xhci_pci:usbhid:hid_generic:nbd max_part=63 \
 		 -f xfs \
 		 -r /dev/sda2 \
 		 -o /boot/initrd-$KVER.gz
